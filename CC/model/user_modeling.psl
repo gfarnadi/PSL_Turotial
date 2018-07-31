@@ -1,0 +1,10 @@
+10: Source(S) & Predicts(S,U,A,L)-> Is(U,A,L)^2
+10: Source(S) & ~Predicts(S,U,A,L)-> ~Is(U,A,L)^2
+1: Friend(U,V) & Is(V,A,L)-> Is(U,A,L)^2
+1: Friend(V,U) & Is(V,A,L)-> Is(U,A,L)^2
+1: Friend(U,V) & ~Is(V,A,L)-> ~Is(U,A,L)^2
+1: Friend(V,U) & ~Is(V,A,L)-> ~Is(U,A,L)^2
+10: Likes(U,T) & Likes(V,T) & Is(V,A,L) -> Is(U,A,L)^2
+10: Likes(U,T) & Likes(V,T) & ~Is(V,A,L) -> ~Is(U,A,L)^2
+100: Is(U,A,+L) = 1
+

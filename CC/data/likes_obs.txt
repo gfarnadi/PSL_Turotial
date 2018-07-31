@@ -1,0 +1,21 @@
+u0	romance	1.0
+u0	classic	1.0
+u1	romance	1.0
+u1	animation	1.0
+u2	romance	1.0
+u2	animation	1.0
+u3	action	1.0
+u3	drama	1.0
+u4	romance	1.0
+u4	animation	1.0
+u5	action	1.0
+u5	classic	1.0
+u6	romance	1.0
+u6	drama	1.0
+u7	romance	1.0
+u7	drama	1.0
+u8	action	1.0
+u8	animation	1.0
+u9	action	1.0
+u9	classic	1.0
+

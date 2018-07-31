@@ -1,0 +1,21 @@
+u0	gender	female
+u0	age	old
+u1	gender	female
+u1	age	middle_age
+u2	gender	female
+u2	age	young
+u3	gender	male
+u3	age	middle_age
+u4	gender	female
+u4	age	young
+u5	gender	male
+u5	age	old
+u6	gender	female
+u6	age	middle_age
+u7	gender	female
+u7	age	middle_age
+u8	gender	female
+u8	age	young
+u9	gender	male
+u9	age	old
+

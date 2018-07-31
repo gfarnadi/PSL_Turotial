@@ -1,0 +1,17 @@
+predicates:
+  Predicts/4: closed
+  Friend/2: closed
+  Likes/2: closed
+  Source/1: closed
+  Is/3: open
+observations:
+  Predicts: data/local_predictor_obs.txt
+  Source: data/source_obs.txt
+  Friend: data/friend_obs.txt
+  Likes : data/likes_obs.txt
+  Is : data/user_train.txt
+targets: 
+  Is : data/user_target.txt
+truth: 
+  Is : data/user_truth.txt
+
