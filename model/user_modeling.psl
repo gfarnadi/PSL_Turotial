@@ -1,6 +1,0 @@
-10: Predicts(S,U,A,L)-> Is(U,A,L)^2
-100: Friend(U,V) & Is(V,A,L)-> Is(U,A,L)^2
-100: Friend(V,U) & Is(V,A,L)-> Is(U,A,L)^2
-10: Likes(U,T) & Likes(V,T) & Is(V,A,L) -> Is(U,A,L)^2
-10: Is(U,A,+L) = 1
-
