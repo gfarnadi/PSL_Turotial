@@ -348,13 +348,23 @@ def get_item(likes_label_cat, label_cat, cat, label, max_counter, no_prob):
 
 # In[15]:
 
+def save_source(node_size, source, source_file):
+    text = ''
+    for i in range (node_size):
+        for s in source:
+            text+= 'u'+str(i)+'\t'+s+'\t'+'1.0'+'\n'
+    save_file(source_file,text)
+
+
+# In[16]:
+
 def make_data(node_size, train_size, folder_path):
     #label_cat = [['gender','female','male'], ['age', 'young', 'middle_age', 'old']]
-    label_cat = [['gender','female','male']]
-    #accuracy_label_cat_1 =  [[0.6, 'gender','female','male'], [0.6, 'age', 'young', 'middle_age', 'old']]
-    #accuracy_label_cat_2 =  [[0.7, 'gender','female','male'], [0.7, 'age', 'young', 'middle_age', 'old']]
-    accuracy_label_cat_1 =  [[0.7, 'gender','female','male']]
-    accuracy_label_cat_2 =  [[0.7, 'gender','female','male']]
+    label_cat = [['personality','ext','int']]
+    #accuracy_label_cat_1 =  [[0.8, 'gender','female','male'], [0.7, 'age', 'young', 'middle_age', 'old']]
+    #accuracy_label_cat_2 =  [[0.7, 'gender','female','male'], [0.8, 'age', 'young', 'middle_age', 'old']]
+    accuracy_label_cat_1 =  [[0.75, 'personality','ext','int']]
+    accuracy_label_cat_2 =  [[0.65, 'personality','ext','int']]
     # create user data
     user_truth_file = folder_path+ 'user_truth.txt'
     user_target_file = folder_path+ 'user_target.txt'
@@ -369,20 +379,24 @@ def make_data(node_size, train_size, folder_path):
     # create local redictors
     predictor_file_1 = folder_path+ 'local_predictor_1_obs.txt'
     predictor_file_2 = folder_path+ 'local_predictor_2_obs.txt'
-    predict_1 = local_predictor('s1',accuracy_label_cat_1, user_all_file, label_cat, predictor_file_1, False)
-    predict_2 = local_predictor('s2',accuracy_label_cat_2, user_all_file, label_cat, predictor_file_2, False)
-    source_file = folder_path+ 'source_obs.txt'
-    save_file(source_file,'s1\t1.0'+'\n'+'s2\t1.0')
+    predict_1 = local_predictor('txt',accuracy_label_cat_1, user_all_file, label_cat, predictor_file_1, False)
+    predict_2 = local_predictor('img',accuracy_label_cat_2, user_all_file, label_cat, predictor_file_2, False)
+    source_file = folder_path+ 'has_obs.txt'
+    source = ['txt', 'img']
+    save_source(node_size, source, source_file)
     predictor_all_file = folder_path+ 'local_predictor_obs.txt'
     save_file(predictor_all_file, predict_1+predict_2)
     # create (user-item) likes
-    #likes_label_cat = [[0.8,'gender', 'romance', 'action'], [0.8,'age', 'animation', 'drama', 'classic']]
-    likes_label_cat = [[0.8,'gender', 'romance', 'action']]
+    #likes_label_cat = [[0.7,'gender', 'romance', 'action'], [0.7,'age', 'animation', 'drama', 'classic']]
+    likes_label_cat = [[0.7,'personality','action','anim']]
     likes_file = folder_path+ 'likes_obs.txt'
+    Join_label_cat = [[0.8,'personality', 'party', 'video-game']]
+    joins_file = folder_path+ 'joins_obs.txt'
     create_likes(user_all_file, likes_label_cat, label_cat, likes_file, False)
+    create_likes(user_all_file, Join_label_cat, label_cat, joins_file, False)
 
 
-# In[16]:
+# In[17]:
 
 node_size = 100
 train_size = 6
@@ -390,16 +404,18 @@ folder_path = '../data/'
 make_data(node_size, train_size, folder_path)
 
 
-# In[17]:
+# In[18]:
 
-model_txt = '''1: Source(S) & Predicts(S,U,A,L)-> Is(U,A,L)^2
-1: Source(S) & ~Predicts(S,U,A,L)-> ~Is(U,A,L)^2
+model_txt = '''//1: Has(U,S) & Predicts(S,U,A,L)-> Is(U,A,L)^2
+//1: Has(U,S) & ~Predicts(S,U,A,L)-> ~Is(U,A,L)^2
 1: Friend(U,V) & Is(V,A,L)-> Is(U,A,L)^2
 1: Friend(V,U) & Is(V,A,L)-> Is(U,A,L)^2
 1: Friend(U,V) & ~Is(V,A,L)-> ~Is(U,A,L)^2
 1: Friend(V,U) & ~Is(V,A,L)-> ~Is(U,A,L)^2
-1: Likes(U,T) & Likes(V,T) & Is(V,A,L) -> Is(U,A,L)^2
-1: Likes(U,T) & Likes(V,T) & ~Is(V,A,L) -> ~Is(U,A,L)^2
+//1: Likes(U,T) & Likes(V,T) & Is(V,A,L) -> Is(U,A,L)^2
+//1: Likes(U,T) & Likes(V,T) & ~Is(V,A,L) -> ~Is(U,A,L)^2
+//1: Joins(U,G) & Joins(V,G) & Is(V,A,L) -> Is(U,A,L)^2
+//1: Joins(U,G) & Joins(V,G) & ~Is(V,A,L) -> ~Is(U,A,L)^2
 1: Is(U,A,+L) = 1
 '''
 
@@ -407,13 +423,15 @@ data_txt = '''predicates:
   Predicts/4: closed
   Friend/2: closed
   Likes/2: closed
-  Source/1: closed
+  Joins/2: closed
+  Has/2: closed
   Is/3: open
 observations:
   Predicts: ../data/local_predictor_obs.txt
-  Source: ../data/source_obs.txt
+  Has: ../data/has_obs.txt
   Friend: ../data/friend_obs.txt
   Likes : ../data/likes_obs.txt
+  Joins : ../data/joins_obs.txt
   Is : ../data/user_train.txt
 targets: 
   Is : ../data/user_target.txt
