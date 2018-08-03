@@ -1,5 +1,4 @@
-
-//Rules for the latent model
+//Latent trusting/trustworthy rules
 1.0: Knows(A, B) & Trusting(A) -> Trusts(A, B) ^2
 1.0: Knows(A, B) & Trustworthy(B) -> Trusts(A, B) ^2
 1.0: Knows(A, B) & Trusting(A) & Trustworthy(B) -> Trusts(A, B) ^2
@@ -9,3 +8,6 @@
 // two-sided prior
 1.0: Knows(A, B) & Prior('0') -> Trusts(A, B) ^2
 1.0: Knows(A, B) & Trusts(A, B) -> Prior('0') ^2
+
+// negative prior
+1.0:~Trusts(A, B) ^2
